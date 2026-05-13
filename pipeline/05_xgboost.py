@@ -66,7 +66,6 @@ X_test = X_test[FEATURES]
 
 
 # Hyperparameter search space for random search
-# Hyperparameter search space for random search
 PARAM_GRID = {
     "n_estimators": [100, 200, 500, 700],
     "learning_rate": [0.01, 0.03, 0.05, 0.07],
