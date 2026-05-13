@@ -39,6 +39,14 @@ FEATURES = [
     'surface_Clay',
     'surface_Grass',
     'surface_Hard',
+    'tourney_level_250', 
+    'tourney_level_500', 
+    'tourney_level_A',
+    'tourney_level_D', 
+    'tourney_level_F', 
+    'tourney_level_G',
+    'tourney_level_M', 
+    'tourney_level_O'
 ]
 
 # Load the train and test set
@@ -121,16 +129,17 @@ nested_scores = cross_validate(
 # print("Recall:", np.mean(nested_scores["test_recall"]))
 # print("ROC AUC:", np.mean(nested_scores["test_roc_auc"]))
 
+
+
+# =========================================================
+#                    MODEL TRAINING
+# =========================================================
 # Initialize LightGBM classifier
 model = lgb.LGBMClassifier(
     random_state=42,
     max_depth = -1,
     verbosity=-1
 )
-
-# =========================================================
-#                    MODEL TRAINING
-# =========================================================
 
 # Create time series aware cross validation
 tscv = TimeSeriesSplit(n_splits=5)
