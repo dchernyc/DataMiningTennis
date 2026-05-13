@@ -42,7 +42,7 @@ def build_train_test_sets(df, test_size):
        'p1_rank_points', 'p2_rank_points', 'p1_ace', 'p2_ace', 'p1_df',
        'p2_df', 'p1_svpt', 'p2_svpt', 'p1_1stIn', 'p2_1stIn', 'p1_1stWon',
        'p2_1stWon', 'p1_2ndWon', 'p2_2ndWon', 'p1_SvGms', 'p2_SvGms',
-       'p1_bpSaved', 'p2_bpSaved', 'p1_bpFaced', 'p2_bpFaced', 'p1_elo_surface_after','p2_elo_surface_after']
+       'p1_bpSaved', 'p2_bpSaved', 'p1_bpFaced', 'p2_bpFaced', 'p1_elo_surface_after','p2_elo_surface_after','p1_elo_after','p2_elo_after']
 
     train = train.drop(columns=drop_cols)
     test = test.drop(columns=drop_cols)
