@@ -92,7 +92,7 @@ inner_cv = TimeSeriesSplit(n_splits=5)
 search = RandomizedSearchCV(
     estimator=model,
     param_distributions=PARAM_GRID,
-    n_iter=40,
+    n_iter=5,
     scoring="accuracy",
     cv=inner_cv,
     verbose=1,
@@ -124,10 +124,10 @@ nested_scores = cross_validate(
 
 
 # Print results
-# print("Accuracy:", np.mean(nested_scores["test_accuracy"]))
-# print("Precision:", np.mean(nested_scores["test_precision"]))
-# print("Recall:", np.mean(nested_scores["test_recall"]))
-# print("ROC AUC:", np.mean(nested_scores["test_roc_auc"]))
+print("Accuracy:", np.mean(nested_scores["test_accuracy"]))
+print("Precision:", np.mean(nested_scores["test_precision"]))
+print("Recall:", np.mean(nested_scores["test_recall"]))
+print("ROC AUC:", np.mean(nested_scores["test_roc_auc"]))
 
 
 
@@ -137,7 +137,6 @@ nested_scores = cross_validate(
 # Initialize LightGBM classifier
 model = lgb.LGBMClassifier(
     random_state=42,
-    max_depth = -1,
     verbosity=-1
 )
 
@@ -148,7 +147,7 @@ tscv = TimeSeriesSplit(n_splits=5)
 search = RandomizedSearchCV(
     estimator=model,
     param_distributions=PARAM_GRID,
-    n_iter=100,
+    n_iter=10,
     scoring="accuracy",
     cv=tscv,
     verbose=1,
@@ -161,11 +160,11 @@ search.fit(X_train, y_train)
 y_pred = search.predict(X_test)
 y_pred_proba = search.predict_proba(X_test)[:, 1]
 
-# {'subsample': 0.8, 'num_leaves': 15, 'n_estimators': 200, 'min_child_samples': 40, 'max_depth': 3, 'learning_rate': 0.07, 'colsample_bytree': 0.8}
-
 # Print results
 print(search.best_params_)
 print("Accuracy:", accuracy_score(y_test, y_pred))
 print("Precision:", precision_score(y_test, y_pred))
 print("Recall:", recall_score(y_test, y_pred))
 print("ROC AUC:", roc_auc_score(y_test, y_pred_proba))
+
+# best hyperparameters: {'subsample': 0.8, 'num_leaves': 15, 'n_estimators': 200, 'min_child_samples': 40, 'max_depth': 3, 'learning_rate': 0.07, 'colsample_bytree': 0.8}
