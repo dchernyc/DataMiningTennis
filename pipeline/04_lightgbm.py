@@ -13,9 +13,6 @@ from sklearn.metrics import (
     recall_score,
     roc_auc_score,
     brier_score_loss,
-    confusion_matrix,
-    ConfusionMatrixDisplay,
-    roc_curve
 )
 
 # Define the features to use
@@ -109,6 +106,7 @@ scorings = {
     "precision": "precision",
     "recall": "recall",
     "roc_auc": "roc_auc",
+    "brier": "neg_brier_score"
 }
 
 # Nested cv
@@ -121,15 +119,15 @@ nested_scores = cross_validate(
     n_jobs=-1
 )
 
-
-
 # Print results
+print("\n" + "="*50)
+print("NESTED CROSS VALIDATION RESULTS")
+print("="*50)
 print("Accuracy:", np.mean(nested_scores["test_accuracy"]))
 print("Precision:", np.mean(nested_scores["test_precision"]))
 print("Recall:", np.mean(nested_scores["test_recall"]))
 print("ROC AUC:", np.mean(nested_scores["test_roc_auc"]))
-
-
+print("Brier Score:", -np.mean(nested_scores["test_brier"]))
 
 # =========================================================
 #                    MODEL TRAINING
@@ -161,10 +159,15 @@ y_pred = search.predict(X_test)
 y_pred_proba = search.predict_proba(X_test)[:, 1]
 
 # Print results
-print(search.best_params_)
+print("\n" + "="*50)
+print("TEST SET RESULTS")
+print("="*50)
+print("Hyperparameters:", search.best_params_)
 print("Accuracy:", accuracy_score(y_test, y_pred))
 print("Precision:", precision_score(y_test, y_pred))
 print("Recall:", recall_score(y_test, y_pred))
 print("ROC AUC:", roc_auc_score(y_test, y_pred_proba))
+print("Brier Score:", brier_score_loss(y_test, y_pred_proba))
 
 # best hyperparameters: {'subsample': 0.8, 'num_leaves': 15, 'n_estimators': 200, 'min_child_samples': 40, 'max_depth': 3, 'learning_rate': 0.07, 'colsample_bytree': 0.8}
+
