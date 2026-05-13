@@ -66,15 +66,14 @@ X_test = X_test[FEATURES]
 
 
 # Hyperparameter search space for random search
-# PARAM_GRID = {
-#     "n_estimators": [120, 150, 180, 200],
-#     "learning_rate": [0.05, 0.06, 0.07],
-#     "num_leaves": [15, 31],
-#     "min_child_samples": [40, 60, 80],
-#     "max_depth": [3, 5],
-#     "subsample": [0.8, 1.0],
-#     "colsample_bytree": [0.8, 1.0]
-# }
+# Hyperparameter search space for random search
+PARAM_GRID = {
+    "n_estimators": [100, 200, 500, 700],
+    "learning_rate": [0.01, 0.03, 0.05, 0.07],
+    "max_depth": [3, 5, 7],
+    "min_child_weight": [1, 3, 5],
+    "subsample": [0.6, 0.8, 1.0],
+}
 
 # =========================================================
 #                    NESTED CROSS VALIDATION
@@ -127,15 +126,6 @@ X_test = X_test[FEATURES]
 # print("Precision:", np.mean(nested_scores["test_precision"]))
 # print("Recall:", np.mean(nested_scores["test_recall"]))
 # print("ROC AUC:", np.mean(nested_scores["test_roc_auc"]))
-
-# Hyperparameter search space for random search
-PARAM_GRID = {
-    "n_estimators": [100, 200, 500, 700],
-    "learning_rate": [0.01, 0.03, 0.05, 0.07],
-    "max_depth": [3, 5, 7],
-    "min_child_weight": [1, 3, 5],
-    "subsample": [0.6, 0.8, 1.0],
-}
 
 # =========================================================
 #                    MODEL TRAINING
