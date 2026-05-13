@@ -78,53 +78,51 @@ PARAM_GRID = {
 #                    NESTED CROSS VALIDATION
 # =========================================================
 
-# # Nested cross validation
-# model = xgb.XGBClassifier(
-#     random_state=42,
-# )
+# Nested cross validation
+model = xgb.XGBClassifier(
+    random_state=42,
+)
 
-# # Inner cross validation for hyperparameter selection
-# inner_cv = TimeSeriesSplit(n_splits=5)
+# Inner cross validation for hyperparameter selection
+inner_cv = TimeSeriesSplit(n_splits=5)
 
-# # Random search cross validation
-# search = RandomizedSearchCV(
-#     estimator=model,
-#     param_distributions=PARAM_GRID,
-#     n_iter=40,
-#     scoring="accuracy",
-#     cv=inner_cv,
-#     n_jobs=-1,
-#     random_state=42
-# )
+# Random search cross validation
+search = RandomizedSearchCV(
+    estimator=model,
+    param_distributions=PARAM_GRID,
+    n_iter=5,
+    scoring="accuracy",
+    cv=inner_cv,
+    n_jobs=-1,
+    random_state=42
+)
 
-# # Outer cross validation for model evaluation
-# outer_cv = TimeSeriesSplit(n_splits=5)
+# Outer cross validation for model evaluation
+outer_cv = TimeSeriesSplit(n_splits=5)
 
-# # Scorings for outer cross validation
-# scorings = {
-#     "accuracy": "accuracy",
-#     "precision": "precision",
-#     "recall": "recall",
-#     "roc_auc": "roc_auc",
-# }
+# Scorings for outer cross validation
+scorings = {
+    "accuracy": "accuracy",
+    "precision": "precision",
+    "recall": "recall",
+    "roc_auc": "roc_auc",
+}
 
-# # Nested cv
-# nested_scores = cross_validate(
-#     search,
-#     X_train,
-#     y_train,
-#     cv=outer_cv,
-#     scoring=scorings,
-#     n_jobs=-1
-# )
-
-
+# Nested cv
+nested_scores = cross_validate(
+    search,
+    X_train,
+    y_train,
+    cv=outer_cv,
+    scoring=scorings,
+    n_jobs=-1
+)
 
 # Print results
-# print("Accuracy:", np.mean(nested_scores["test_accuracy"]))
-# print("Precision:", np.mean(nested_scores["test_precision"]))
-# print("Recall:", np.mean(nested_scores["test_recall"]))
-# print("ROC AUC:", np.mean(nested_scores["test_roc_auc"]))
+print("Accuracy:", np.mean(nested_scores["test_accuracy"]))
+print("Precision:", np.mean(nested_scores["test_precision"]))
+print("Recall:", np.mean(nested_scores["test_recall"]))
+print("ROC AUC:", np.mean(nested_scores["test_roc_auc"]))
 
 # =========================================================
 #                    MODEL TRAINING
@@ -141,7 +139,7 @@ tscv = TimeSeriesSplit(n_splits=5)
 search = RandomizedSearchCV(
     estimator=model,
     param_distributions=PARAM_GRID,
-    n_iter=40,
+    n_iter=10,
     scoring="accuracy",
     cv=tscv,
     n_jobs=-1,
