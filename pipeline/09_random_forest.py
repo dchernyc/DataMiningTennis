@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.utils.parallel import Parallel, delayed
 from sklearn.model_selection import (
     RandomizedSearchCV, 
     TimeSeriesSplit, 
@@ -67,14 +66,13 @@ X_test = X_test[FEATURES]
 
 # Hyperparameter search space for random search
 PARAM_GRID = {
-    "n_estimators": [800, 1000, 1200],
+    "n_estimators": [800, 1000],
     "max_depth": [10, 15, 20],
     "min_samples_split": [2, 5],
     "min_samples_leaf": [1, 2, 5],
     "max_features": ["sqrt", "log2"]
 }
 
-'''
 # =========================================================
 #                    NESTED CROSS VALIDATION
 # =========================================================
@@ -92,16 +90,16 @@ inner_cv = TimeSeriesSplit(n_splits=5)
 search = RandomizedSearchCV(
     estimator=model,
     param_distributions=PARAM_GRID,
-    n_iter=40,
+    n_iter=5,
     scoring="accuracy",
     cv=inner_cv,
-    verbose=1,
+    verbose=0,
     n_jobs=-1,
     random_state=42
 )
 
 # Outer cross validation for model evaluation
-outer_cv = TimeSeriesSplit(n_splits=5)
+outer_cv = TimeSeriesSplit(n_splits=3)
 
 # Scorings for outer cross validation
 scorings = {
@@ -121,17 +119,11 @@ nested_scores = cross_validate(
     n_jobs=-1
 )
 
-
-
 # Print results
-# print("Accuracy:", np.mean(nested_scores["test_accuracy"]))
-# print("Precision:", np.mean(nested_scores["test_precision"]))
-# print("Recall:", np.mean(nested_scores["test_recall"]))
-# print("ROC AUC:", np.mean(nested_scores["test_roc_auc"]))
-
-
-
-'''
+print("Accuracy:", np.mean(nested_scores["test_accuracy"]))
+print("Precision:", np.mean(nested_scores["test_precision"]))
+print("Recall:", np.mean(nested_scores["test_recall"]))
+print("ROC AUC:", np.mean(nested_scores["test_roc_auc"]))
 
 # =========================================================
 #                    MODEL TRAINING
@@ -153,7 +145,7 @@ search = RandomizedSearchCV(
     n_iter=10,
     scoring="accuracy",
     cv=tscv,
-    verbose=1,
+    verbose=0,
     n_jobs=-1,
     random_state=42
 )
