@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.utils.parallel import Parallel, delayed
 from sklearn.model_selection import (
     RandomizedSearchCV, 
     TimeSeriesSplit, 
@@ -39,6 +40,14 @@ FEATURES = [
     'surface_Clay',
     'surface_Grass',
     'surface_Hard',
+    'tourney_level_250', 
+    'tourney_level_500', 
+    'tourney_level_A',
+    'tourney_level_D', 
+    'tourney_level_F', 
+    'tourney_level_G',
+    'tourney_level_M', 
+    'tourney_level_O'
 ]
 
 # Load the train and test set
@@ -58,11 +67,11 @@ X_test = X_test[FEATURES]
 
 # Hyperparameter search space for random search
 PARAM_GRID = {
-    "n_estimators": [100, 200],
-    "max_depth": [5, 10, 20],
+    "n_estimators": [800, 1000, 1200],
+    "max_depth": [10, 15, 20],
     "min_samples_split": [2, 5],
-    "min_samples_leaf": [1, 2],
-    "max_features": ["sqrt"]
+    "min_samples_leaf": [1, 2, 5],
+    "max_features": ["sqrt", "log2"]
 }
 
 '''
@@ -120,16 +129,19 @@ nested_scores = cross_validate(
 # print("Recall:", np.mean(nested_scores["test_recall"]))
 # print("ROC AUC:", np.mean(nested_scores["test_roc_auc"]))
 
+
+
 '''
+
+# =========================================================
+#                    MODEL TRAINING
+# =========================================================
+
 # Initialize Random Forest Classifier
 model = RandomForestClassifier(
     random_state=42,
     n_jobs=-1
 )
-
-# =========================================================
-#                    MODEL TRAINING
-# =========================================================
 
 # Create time series aware cross validation
 tscv = TimeSeriesSplit(n_splits=5)
@@ -138,20 +150,20 @@ tscv = TimeSeriesSplit(n_splits=5)
 search = RandomizedSearchCV(
     estimator=model,
     param_distributions=PARAM_GRID,
-    n_iter=20,
+    n_iter=10,
     scoring="accuracy",
     cv=tscv,
     verbose=1,
     n_jobs=-1,
     random_state=42
 )
+
+
 search.fit(X_train, y_train)
 
 # Predict
 y_pred = search.predict(X_test)
 y_pred_proba = search.predict_proba(X_test)[:, 1]
-
-# {'subsample': 0.8, 'num_leaves': 15, 'n_estimators': 200, 'min_child_samples': 40, 'max_depth': 3, 'learning_rate': 0.07, 'colsample_bytree': 0.8}
 
 # Print results
 print(search.best_params_)
@@ -159,3 +171,9 @@ print("Accuracy:", accuracy_score(y_test, y_pred))
 print("Precision:", precision_score(y_test, y_pred))
 print("Recall:", recall_score(y_test, y_pred))
 print("ROC AUC:", roc_auc_score(y_test, y_pred_proba))
+
+# best hyperparameter = {'n_estimators': 1200, 'min_samples_split': 5, 'min_samples_leaf': 2, 'max_features': 'sqrt', 'max_depth': 10}
+
+
+
+
