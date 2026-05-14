@@ -56,7 +56,7 @@ def _save_metrics(y_test, y_pred, y_pred_proba, model_name, timestamp):
             writer.writeheader()
         writer.writerow(metrics)
     
-    print(f"Metrics saved to {csv_path}")
+    print(f"\n  Metrics saved to {csv_path}")
 
 
 def _plot_confusion_matrix(y_test, y_pred, model_name, out_dir):
