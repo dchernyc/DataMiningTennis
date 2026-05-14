@@ -7,6 +7,7 @@ from feature_engineering.reshape_to_player_vs_player import reshape_to_player_vs
 from feature_engineering.add_feature_differences import add_feature_differences
 from feature_engineering.encode_one_hot import encode_one_hot
 from feature_engineering.encode_indoor import encode_indoor
+import config as Config
 
 def feature_pipeline(df):
     
@@ -48,10 +49,9 @@ def build_train_test_sets(df, test_size):
     test = test.drop(columns=drop_cols)
     return train, test
 
-
 # Load the cleaned dataset and create training and testing sets
-df = pd.read_csv("data/2000_2026_cleaned.csv")
+df = pd.read_csv(Config.CLEANED_DATA_PATH)
 df = feature_pipeline(df)
 train, test = build_train_test_sets(df, test_size=0.2)
-train.to_csv("data/train.csv", index=False)
-test.to_csv("data/test.csv", index=False)
+train.to_csv(Config.TRAIN_FILE, index=False)
+test.to_csv(Config.TEST_FILE, index=False)

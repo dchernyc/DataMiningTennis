@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import (
     RandomizedSearchCV, 
@@ -14,41 +13,11 @@ from sklearn.metrics import (
     roc_auc_score,
     brier_score_loss,
 )
-
-# Define the features to use
-FEATURES = [
-    'ht_diff',
-    'age_diff',
-    'rank_diff',
-    'rank_points_diff',
-    'ace_rate_10_diff',
-    'df_rate_10_diff',
-    'bp_save_rate_10_diff',
-    'serve_win_rate_10_diff',
-    '1stWon_rate_10_diff',
-    '2ndWon_rate_10_diff',
-    'h2h_diff',
-    'win_rate_10_diff',
-    'elo_before_diff',
-    'elo_surface_before_diff',
-    'elo_surface_blended_before_diff',
-    'surface_Carpet',
-    'surface_Clay',
-    'surface_Grass',
-    'surface_Hard',
-    'tourney_level_250', 
-    'tourney_level_500', 
-    'tourney_level_A',
-    'tourney_level_D', 
-    'tourney_level_F', 
-    'tourney_level_G',
-    'tourney_level_M', 
-    'tourney_level_O'
-]
+import config as Config
 
 # Load the train and test set
-train = pd.read_csv("data/train.csv")
-test = pd.read_csv("data/test.csv")
+train = pd.read_csv(Config.TRAIN_FILE)
+test = pd.read_csv(Config.TEST_FILE)
 
 # Test train/test split
 X_train = train.drop(columns=['Winner_is_p1'])
@@ -57,8 +26,8 @@ X_test = test.drop(columns=['Winner_is_p1'])
 y_test = test['Winner_is_p1']
 
 # Select features
-X_train = X_train[FEATURES]
-X_test = X_test[FEATURES]
+X_train = X_train[Config.FEATURES]
+X_test = X_test[Config.FEATURES]
 
 
 # Hyperparameter search space for random search
@@ -104,6 +73,7 @@ scorings = {
     "precision": "precision",
     "recall": "recall",
     "roc_auc": "roc_auc",
+    "brier": "neg_brier_score"
 }
 
 # Nested cv
