@@ -33,7 +33,7 @@ X_test = X_test[Config.FEATURES]
 
 # Hyperparameter search space for random search
 PARAM_GRID = {
-    "n_estimators": [800, 1000],
+    "n_estimators": [800, 1000, 1200],
     "max_depth": [10, 15, 20],
     "min_samples_split": [2, 5],
     "min_samples_leaf": [1, 2, 5],
@@ -114,7 +114,7 @@ tscv = TimeSeriesSplit(n_splits=5)
 search = RandomizedSearchCV(
     estimator=model,
     param_distributions=PARAM_GRID,
-    n_iter=10,
+    n_iter=20,
     scoring="accuracy",
     cv=tscv,
     verbose=0,
