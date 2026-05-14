@@ -1,0 +1,2 @@
+model,timestamp,accuracy,precision,recall,f1,roc_auc,brier_score
+Random Forest,2026-05-14_20-45-02,0.6486,0.6433,0.6515,0.6474,0.7137,0.2149

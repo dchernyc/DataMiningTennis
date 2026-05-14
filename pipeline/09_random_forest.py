@@ -14,6 +14,7 @@ from sklearn.metrics import (
     brier_score_loss,
 )
 import config as Config
+from evaluate import evaluate
 
 # Load the train and test set
 train = pd.read_csv(Config.TRAIN_FILE)
@@ -141,6 +142,12 @@ print("Brier Score:", brier_score_loss(y_test, y_pred_proba))
 
 # best hyperparameter = {'n_estimators': 1200, 'min_samples_split': 5, 'min_samples_leaf': 2, 'max_features': 'sqrt', 'max_depth': 10}
 
-
-
-
+evaluate(
+    model_name="Random Forest",
+    y_test=y_test,
+    y_pred=y_pred,
+    y_pred_proba=y_pred_proba,
+    hyperparameters=search.best_params_,
+    feature_names=Config.FEATURES,
+    importances=search.best_estimator_.feature_importances_
+)
