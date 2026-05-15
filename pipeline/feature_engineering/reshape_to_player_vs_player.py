@@ -24,4 +24,8 @@ def reshape_to_player_vs_player(df):
     # Drop original w_ and l_ columns
     drop_cols = [col for col in df.columns if col.startswith("w_") or col.startswith("l_")]
     df = df.drop(columns=drop_cols)
+
+    #Check if distribution of Winner_is_p1 is balanced 
+    print("Target Variable Distribution")
+    print(df["Winner_is_p1"].value_counts(normalize=True))
     return df
