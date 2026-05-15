@@ -14,7 +14,7 @@ import config as Config
 test = pd.read_csv(Config.TEST_FILE)
 y_test = test["Winner_is_p1"]
 
-'''
+
 #Baseline 1: predicts the player with the higher rank as the winner
 y_pred1 = (test["p1_rank"] < test["p2_rank"]).astype(int)
 print("Rank Baseline")
@@ -24,7 +24,7 @@ print("Recall:", recall_score(y_test, y_pred1))
 print("ROC AUC:", roc_auc_score(y_test, y_pred1))
 print("Brier Score:", brier_score_loss(y_test, y_pred1))
 print(classification_report(y_test, y_pred1))
-'''
+
 #Baseline 2: predicts the player with the higher elo score (before the match) as the winner
 y_pred2 = (test["p1_elo_before"] > test["p2_elo_before"]).astype(int)
 print("Elo Baseline")
