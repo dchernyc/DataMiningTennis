@@ -1,0 +1,7 @@
+{
+    "model__learning_rate_init": 0.0005,
+    "model__hidden_layer_sizes": [
+        64
+    ],
+    "model__alpha": 0.01
+}
