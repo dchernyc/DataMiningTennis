@@ -27,7 +27,7 @@ print("Brier Score:", brier_score_loss(y_test, y_pred1))
 print(classification_report(y_test, y_pred1))
 
 evaluate(
-    model_name="Rank_Baseline",
+    model_name="Rank Baseline",
     y_test=y_test,
     y_pred=y_pred1,
     y_pred_proba=None,
@@ -47,7 +47,7 @@ print("Brier Score:", brier_score_loss(y_test, y_pred2))
 print(classification_report(y_test, y_pred2))
 
 evaluate(
-    model_name="Elo_Baseline",
+    model_name="Elo Baseline",
     y_test=y_test,
     y_pred=y_pred2,
     y_pred_proba=None,
