@@ -32,14 +32,15 @@ X_test = X_test[Config.FEATURES]
 
 # Hyperparameter search space for random search
 PARAM_GRID = {
-    "n_estimators": [120, 150, 180, 200],
-    "learning_rate": [0.05, 0.06, 0.07],
-    "num_leaves": [15, 31],
+    "n_estimators": [120, 150, 180, 200, 300],
+    "learning_rate": [0.05, 0.06, 0.07,],
+    "num_leaves": [15, 31, 63],
     "min_child_samples": [40, 60, 80],
     "max_depth": [3, 5],
-    "subsample": [0.8, 1.0],
+    "subsample": [0.6, 0.8, 1.0],
     "colsample_bytree": [0.8, 1.0]
 }
+
 
 # =========================================================
 #                    NESTED CROSS VALIDATION
