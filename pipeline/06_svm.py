@@ -22,11 +22,9 @@ from sklearn.metrics import (
 import config as Config
 from evaluate import evaluate
 
-
 # ============================================================
 # Load train and test data
 # ============================================================
-
 train = pd.read_csv(Config.TRAIN_FILE)
 test = pd.read_csv(Config.TEST_FILE)
 
@@ -36,30 +34,20 @@ y_train = train["Winner_is_p1"]
 X_test = test.drop(columns=["Winner_is_p1"])
 y_test = test["Winner_is_p1"]
 
-
-# ============================================================
-# Select features
-# ============================================================
-
 X_train = X_train[Config.FEATURES]
 X_test = X_test[Config.FEATURES]
 
-
 # ============================================================
-# Define hyperparameter search space
+#  Hyperparameter search space
 # ============================================================
-
 PARAM_GRID = {
-    "model__estimator__C": [0.001, 0.01, 0.05, 0.1, 0.5, 1.0],
-    "model__estimator__class_weight": [None, "balanced"],
+    "model__estimator__C": [0.001, 0.01, 0.03, 0.05, 0.1, 0.5, 1.0],
 }
 
-
 # ============================================================
-# Build pipeline
+# Pipeline
 # ============================================================
-
-model = Pipeline([
+pipeline = Pipeline([
     ("imputer", SimpleImputer(strategy="median")),
     ("scaler", StandardScaler()),
     ("model", CalibratedClassifierCV(
@@ -73,15 +61,13 @@ model = Pipeline([
     )),
 ])
 
-
 # ============================================================
-# Inner CV for hyperparameter tuning
+# Nested cross validation
 # ============================================================
-
 inner_cv = TimeSeriesSplit(n_splits=5)
 
 search = RandomizedSearchCV(
-    estimator=model,
+    estimator=pipeline,
     param_distributions=PARAM_GRID,
     n_iter=5,
     scoring="accuracy",
@@ -90,12 +76,7 @@ search = RandomizedSearchCV(
     random_state=42,
 )
 
-
-# ============================================================
-# Outer CV for nested validation
-# ============================================================
-
-outer_cv = TimeSeriesSplit(n_splits=3)
+outer_cv = TimeSeriesSplit(n_splits=5)
 
 scorings = {
     "accuracy": "accuracy",
@@ -114,58 +95,51 @@ nested_scores = cross_validate(
     n_jobs=-1,
 )
 
-
-# ============================================================
-# Print nested CV results
-# ============================================================
-
+# Print results
 print("\n" + "=" * 50)
 print("NESTED CROSS VALIDATION RESULTS")
 print("=" * 50)
-
 print("Accuracy:", np.mean(nested_scores["test_accuracy"]))
 print("Precision:", np.mean(nested_scores["test_precision"]))
 print("Recall:", np.mean(nested_scores["test_recall"]))
 print("ROC AUC:", np.mean(nested_scores["test_roc_auc"]))
 print("Brier Score:", -np.mean(nested_scores["test_brier"]))
 
-
-# ============================================================
-# Train best model on full training set
-# ============================================================
-
+# =========================================================
+#                    MODEL TRAINING
+# =========================================================
+# Final RandomCV on full training set
+tscv = TimeSeriesSplit(n_splits=5)
+search = RandomizedSearchCV(
+    estimator=pipeline,
+    param_distributions=PARAM_GRID,
+    n_iter=10,
+    scoring="accuracy",
+    cv=tscv,
+    verbose=1,
+    n_jobs=-1,
+    random_state=42
+)
 search.fit(X_train, y_train)
 
-
-# ============================================================
-# Predict on test set
-# ============================================================
-
+# Predict
 y_pred = search.predict(X_test)
 y_pred_proba = search.predict_proba(X_test)[:, 1]
 
-
-# ============================================================
-# Print final test results
-# ============================================================
-
-print("\n" + "=" * 50)
+# Print results
+print("\n" + "="*50)
 print("TEST SET RESULTS")
-print("=" * 50)
-
-print("Best Hyperparameters:", search.best_params_)
-
+print("="*50)
+print("Hyperparameters:", search.best_params_)
 print("Accuracy:", accuracy_score(y_test, y_pred))
 print("Precision:", precision_score(y_test, y_pred))
 print("Recall:", recall_score(y_test, y_pred))
 print("ROC AUC:", roc_auc_score(y_test, y_pred_proba))
 print("Brier Score:", brier_score_loss(y_test, y_pred_proba))
 
-
 # ============================================================
 # Save evaluation outputs
 # ============================================================
-
 evaluate(
     model_name="SVM",
     y_test=y_test,

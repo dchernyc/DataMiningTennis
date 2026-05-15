@@ -16,22 +16,24 @@ from sklearn.metrics import (
 import config as Config
 from evaluate import evaluate
 
-# Load the train and test set
+# ============================================================
+# Load train and test data
+# ============================================================
 train = pd.read_csv(Config.TRAIN_FILE)
 test = pd.read_csv(Config.TEST_FILE)
 
-# Test train/test split
-X_train = train.drop(columns=['Winner_is_p1'])
-y_train = train['Winner_is_p1']
-X_test = test.drop(columns=['Winner_is_p1'])
-y_test = test['Winner_is_p1']
+X_train = train.drop(columns=["Winner_is_p1"])
+y_train = train["Winner_is_p1"]
 
-# Select features
+X_test = test.drop(columns=["Winner_is_p1"])
+y_test = test["Winner_is_p1"]
+
 X_train = X_train[Config.FEATURES]
 X_test = X_test[Config.FEATURES]
 
-
-# Hyperparameter search space for random search
+# ============================================================
+#  Hyperparameter search space
+# ============================================================
 PARAM_GRID = {
     "n_estimators": [800, 1000, 1200],
     "max_depth": [10, 15, 20],
@@ -41,56 +43,51 @@ PARAM_GRID = {
 }
 
 # =========================================================
-#                    NESTED CROSS VALIDATION
+#  Model
 # =========================================================
-
-# Nested cross validation
 model = RandomForestClassifier(
     random_state=42,
     n_jobs=-1
 )
 
-# Inner cross validation for hyperparameter selection
+# =========================================================
+# Nested cross validation
+# =========================================================
 inner_cv = TimeSeriesSplit(n_splits=5)
 
-# Random search cross validation
 search = RandomizedSearchCV(
     estimator=model,
     param_distributions=PARAM_GRID,
     n_iter=5,
     scoring="accuracy",
     cv=inner_cv,
-    verbose=0,
     n_jobs=-1,
-    random_state=42
+    random_state=42,
 )
 
-# Outer cross validation for model evaluation
-outer_cv = TimeSeriesSplit(n_splits=3)
+outer_cv = TimeSeriesSplit(n_splits=5)
 
-# Scorings for outer cross validation
 scorings = {
     "accuracy": "accuracy",
     "precision": "precision",
     "recall": "recall",
     "roc_auc": "roc_auc",
-    "brier": "neg_brier_score"
+    "brier": "neg_brier_score",
 }
 
-# Nested cv
 nested_scores = cross_validate(
     search,
     X_train,
     y_train,
     cv=outer_cv,
     scoring=scorings,
-    n_jobs=-1
+    n_jobs=-1,
 )
 
 # Print results
-print("\n" + "="*50)
+print("\n" + "=" * 50)
 print("NESTED CROSS VALIDATION RESULTS")
-print("="*50)
+print("=" * 50)
 print("Accuracy:", np.mean(nested_scores["test_accuracy"]))
 print("Precision:", np.mean(nested_scores["test_precision"]))
 print("Recall:", np.mean(nested_scores["test_recall"]))
@@ -100,29 +97,18 @@ print("Brier Score:", -np.mean(nested_scores["test_brier"]))
 # =========================================================
 #                    MODEL TRAINING
 # =========================================================
-
-# Initialize Random Forest Classifier
-model = RandomForestClassifier(
-    random_state=42,
-    n_jobs=-1
-)
-
-# Create time series aware cross validation
+# Final RandomCV on full training set
 tscv = TimeSeriesSplit(n_splits=5)
-
-# Run random search cv and fit the best model
 search = RandomizedSearchCV(
     estimator=model,
     param_distributions=PARAM_GRID,
-    n_iter=20,
+    n_iter=10,
     scoring="accuracy",
     cv=tscv,
-    verbose=0,
+    verbose=1,
     n_jobs=-1,
     random_state=42
 )
-
-
 search.fit(X_train, y_train)
 
 # Predict
@@ -140,8 +126,9 @@ print("Recall:", recall_score(y_test, y_pred))
 print("ROC AUC:", roc_auc_score(y_test, y_pred_proba))
 print("Brier Score:", brier_score_loss(y_test, y_pred_proba))
 
-# best hyperparameter = {'n_estimators': 1200, 'min_samples_split': 5, 'min_samples_leaf': 2, 'max_features': 'sqrt', 'max_depth': 10}
-
+# ============================================================
+# Save evaluation outputs
+# ============================================================
 evaluate(
     model_name="Random Forest",
     y_test=y_test,
