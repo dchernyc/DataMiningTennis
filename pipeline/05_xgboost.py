@@ -14,6 +14,7 @@ from sklearn.metrics import (
     brier_score_loss,
 )
 import config as Config
+from evaluate import evaluate
 
 # Load the train and test set
 train = pd.read_csv(Config.TRAIN_FILE)
@@ -135,5 +136,12 @@ print("Brier Score:", brier_score_loss(y_test, y_pred_proba))
 
 # best hyperparameter = {'subsample': 0.6, 'n_estimators': 500, 'min_child_weight': 3, 'max_depth': 3, 'learning_rate': 0.03}
 
-
-# 0.6530951692218687={'subsample': 1.0, 'n_estimators': 700, 'min_child_weight': 1, 'max_depth': 3, 'learning_rate': 0.01}
+evaluate(
+    model_name="XGBoost",
+    y_test=y_test,
+    y_pred=y_pred,
+    y_pred_proba=y_pred_proba,
+    hyperparameters=search.best_params_,
+    feature_names=Config.FEATURES,
+    importances=search.best_estimator_.feature_importances_
+)
