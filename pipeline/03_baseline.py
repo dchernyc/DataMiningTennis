@@ -9,6 +9,7 @@ from sklearn.metrics import (
     classification_report
 )
 import config as Config
+from evaluate import evaluate
 
 #Load the test set
 test = pd.read_csv(Config.TEST_FILE)
@@ -25,6 +26,16 @@ print("ROC AUC:", roc_auc_score(y_test, y_pred1))
 print("Brier Score:", brier_score_loss(y_test, y_pred1))
 print(classification_report(y_test, y_pred1))
 
+evaluate(
+    model_name="Rank_Baseline",
+    y_test=y_test,
+    y_pred=y_pred1,
+    y_pred_proba=None,
+    hyperparameters=None,
+    feature_names=None,
+    importances=None
+)
+
 #Baseline 2: predicts the player with the higher elo score (before the match) as the winner
 y_pred2 = (test["p1_elo_before"] > test["p2_elo_before"]).astype(int)
 print("Elo Baseline")
@@ -35,4 +46,12 @@ print("ROC AUC:", roc_auc_score(y_test, y_pred2))
 print("Brier Score:", brier_score_loss(y_test, y_pred2))
 print(classification_report(y_test, y_pred2))
 
-#TODO: Confusion Matrix
+evaluate(
+    model_name="Elo_Baseline",
+    y_test=y_test,
+    y_pred=y_pred2,
+    y_pred_proba=None,
+    hyperparameters=None,
+    feature_names=None,
+    importances=None
+)
