@@ -32,11 +32,12 @@ X_test = X_test[Config.FEATURES]
 
 # Hyperparameter search space for random search
 PARAM_GRID = {
-    "n_estimators": [100, 200, 500, 700],
+    "n_estimators": [100, 150, 200, 500],
     "learning_rate": [0.01, 0.03, 0.05, 0.07],
     "max_depth": [3, 5, 7],
-    "min_child_weight": [1, 3, 5],
-    "subsample": [0.6, 0.8, 1.0],
+    "min_child_weight": [1, 3, 5, 7],
+    "subsample": [ 0.6, 0.8, 1.0],
+    "colsample_bytree": [0.6, 0.8, 1.0],
 }
 
 # =========================================================
@@ -135,3 +136,4 @@ print("Brier Score:", brier_score_loss(y_test, y_pred_proba))
 # best hyperparameter = {'subsample': 0.6, 'n_estimators': 500, 'min_child_weight': 3, 'max_depth': 3, 'learning_rate': 0.03}
 
 
+# 0.6530951692218687={'subsample': 1.0, 'n_estimators': 700, 'min_child_weight': 1, 'max_depth': 3, 'learning_rate': 0.01}
