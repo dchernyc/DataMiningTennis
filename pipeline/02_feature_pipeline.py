@@ -39,7 +39,7 @@ def build_train_test_sets(df, test_size):
     drop_cols = ['match_id', 'tourney_id', 'tourney_name', 'draw_size',
        'tourney_date', 'match_num', 'score', 'best_of', 'round', 'minutes',
        'p1_id', 'p2_id', 'p1_name', 'p2_name', 'p1_hand', 'p2_hand', 'p1_ht',
-       'p2_ht', 'p1_ioc', 'p2_ioc', 'p1_age', 'p2_age', 'p1_rank', 'p2_rank',
+       'p2_ht', 'p1_ioc', 'p2_ioc', 'p1_age', 'p2_age',
        'p1_rank_points', 'p2_rank_points', 'p1_ace', 'p2_ace', 'p1_df',
        'p2_df', 'p1_svpt', 'p2_svpt', 'p1_1stIn', 'p2_1stIn', 'p1_1stWon',
        'p2_1stWon', 'p1_2ndWon', 'p2_2ndWon', 'p1_SvGms', 'p2_SvGms',
