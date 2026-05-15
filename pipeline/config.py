@@ -13,6 +13,7 @@ VISUALISATION_DIR = ROOT_DIR / "data" / "visualisation"
 
 TRAIN_FILE = DATASET_DIR / "train.csv"
 TEST_FILE = DATASET_DIR / "test.csv"
+RAW_DATA_PATH = DATASET_DIR / "2000_2026_raw.csv"
 CLEANED_DATA_PATH = DATASET_DIR / "2000_2026_cleaned.csv"
 
 
