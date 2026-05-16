@@ -49,7 +49,7 @@ print("\n"+"Column information for cleaned dataset:")
 df.info()
 
 #Statistical analysis -> check if value ranges of columns are valid by looking at min/max values
-print("\n"+"Statistical analysis:",) 
+print("\n"+"Statistical analysis:") 
 print(df.describe(include="all"))
 
 #Outlier detection: Interquartile range
