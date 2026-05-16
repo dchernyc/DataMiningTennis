@@ -53,7 +53,7 @@ DataMiningTennis/
 │   ├── Light_GBM_.../                          # Light GBM results (Confusion Matrix, Hyperparameter, Feature Importance)
 │   ├── Logistic_Regression_.../                # Logistic Regression results (Confusion Matrix, Hyperparameter, Feature Importance)
 │    ...
-│   ├── metrics.csv                             # Summary of evaluation metrics for trained models
+│   └── metrics.csv                             # Summary of evaluation metrics for trained models
 ├── Project_Report.pdf                          # Final project report
 ├── Project_Presentation.pdf                    # Project presentation slides
 └── README.md                                   # Project overview and instructions
