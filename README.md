@@ -63,7 +63,7 @@ DataMiningTennis/
 
 ## 📦 Dataset
 
-This project uses **[ATP Tennis 2000 - 2026](<[(https://stats.tennismylife.org/tennis-match-database)]>)** — a large, publicly available database
+This project uses **[ATP Tennis 2000 - 2026](https://stats.tennismylife.org/tennis-match-database)** — a large, publicly available database
 | Property | Detail |
 |---|---|
 | **Dataset** | ATP Tennis 2000 - 2026 |
