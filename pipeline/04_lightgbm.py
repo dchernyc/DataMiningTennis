@@ -13,14 +13,14 @@ from sklearn.metrics import (
     roc_auc_score,
     brier_score_loss,
 )
-import config as Config
+from config import TRAIN_FILE, TEST_FILE, FEATURES
 from evaluate import evaluate
 
 # ============================================================
 # Load train and test data
 # ============================================================
-train = pd.read_csv(Config.TRAIN_FILE)
-test = pd.read_csv(Config.TEST_FILE)
+train = pd.read_csv(TRAIN_FILE)
+test = pd.read_csv(TEST_FILE)
 
 X_train = train.drop(columns=["Winner_is_p1"])
 y_train = train["Winner_is_p1"]
@@ -28,8 +28,8 @@ y_train = train["Winner_is_p1"]
 X_test = test.drop(columns=["Winner_is_p1"])
 y_test = test["Winner_is_p1"]
 
-X_train = X_train[Config.FEATURES]
-X_test = X_test[Config.FEATURES]
+X_train = X_train[FEATURES]
+X_test = X_test[FEATURES]
 
 # ============================================================
 #  Hyperparameter search space
@@ -137,6 +137,6 @@ evaluate(
     y_pred=y_pred,
     y_pred_proba=y_pred_proba,
     hyperparameters=search.best_params_,
-    feature_names=Config.FEATURES,
+    feature_names=FEATURES,
     importances=search.best_estimator_.feature_importances_
 )
