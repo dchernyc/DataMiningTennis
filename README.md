@@ -69,7 +69,7 @@ This project uses **[ATP Tennis 2000 - 2026](<[(https://stats.tennismylife.org/t
 | **Dataset** | ATP Tennis 2000 - 2026 |
 | **Size** | 75k+ ATP matches (2000-2026) |
 | **Modalities** | Time series, text data, numerical data|
-| \*\*Access\*\* | publicly available |
+| **Access** | publicly available |
 
 ### Prediction Task
 
