@@ -39,7 +39,7 @@ PARAM_GRID = {
     "max_depth": [10, 15, 20],
     "min_samples_split": [2, 5],
     "min_samples_leaf": [1, 2, 5],
-    "max_features": ["sqrt", "log2"]
+    'criteroin': ['gini', 'entropy']
 }
 
 # =========================================================
