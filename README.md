@@ -67,4 +67,4 @@ This project uses **[TennisMyLife](https://stats.tennismylife.org/tennis-match-d
 
 ## Running the Project
 
-To run the project, execute only the Python scripts with a numeric prefix (from 01a_*.py to 09_*.py) in ascending order. Make sure that each script finishes successfully before starting the next one.
+To run the project, execute only the Python scripts with a numeric prefix (from 01a_... to 09_...) in ascending order. Make sure that each script finishes successfully before starting the next one.
