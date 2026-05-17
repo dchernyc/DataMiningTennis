@@ -2,7 +2,7 @@
 
 > **Team Project FSS 2026** · Data and Web Science Group · Universität Mannheim
 
-## 👥 Team 10:
+## Team 10:
 
 ```
 | Gerrit Christopher Regelmann
@@ -17,7 +17,7 @@
 
 ## Project Goal
 
-> The objective of this project is to develop and compare predictive models that estimate the outcome of professional men’s ATP tennis matches. Specifically, the task is to predict the winner of a given match based on historical and contextual data available prior to the match.
+> The objective of this project is to develop and compare predictive models that estimate the outcome of professional men’s ATP tennis matches. Specifically, the task is to predict the winner of a given match (binary classification task) based on historical and contextual data available prior to the match.
 
 ---
 
@@ -65,18 +65,4 @@ DataMiningTennis/
 
 ## Dataset
 
-This project uses **[ATP Tennis 2000 - 2026](https://stats.tennismylife.org/tennis-match-database)** — a large, publicly available database
-| Property | Detail |
-|---|---|
-| **Dataset** | ATP Tennis 2000 - 2026 |
-| **Size** | 75k+ ATP matches (2000-2026) |
-| **Modalities** | Time series, text data, numerical data|
-| **Access** | publicly available |
-
-### Prediction Task
-
-| Task              | Type                            | Label |
-| ----------------- | ------------------------------- | ----- |
-| **Match outcome** | Binary classification: win/lose | 0, 1  |
-
----
+This project uses **[TennisMyLife](https://stats.tennismylife.org/tennis-match-database)** — a large, publicly available database. Only matches from 2000 to 2026 (about 78000 rows) are used for model training and evaluation.
