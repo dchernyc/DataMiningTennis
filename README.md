@@ -21,8 +21,6 @@
 
 ---
 
-## Repository Structure
-
 ## Project Structure
 
 ```
