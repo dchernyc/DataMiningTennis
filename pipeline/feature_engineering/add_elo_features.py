@@ -1,7 +1,7 @@
 """
 add_elo_features.py
 -------------------
-Replicates the Elo logic https://www.tennisabstract.com/elo.html and adds four columns:
+Replicates the Elo logic https://tennisabstract.com/reports/atp_elo_ratings.html and adds four columns:
     w_elo_before  – winner's Elo rating BEFORE the match
     l_elo_before  – loser's  Elo rating BEFORE the match
     w_elo_after   – winner's Elo rating AFTER  the match
